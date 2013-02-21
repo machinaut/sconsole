@@ -112,8 +112,8 @@ int openserial(const char *device, int speed)
 		memset(&tio, 0, sizeof(tio));
 
 	tio.c_cflag = B57600 | CS8 | CLOCAL | CREAD;
-	tio.c_ispeed = B57600;
-	tio.c_ospeed = B57600;
+	cfsetispeed(&tio, B57600);
+	cfsetospeed(&tio, B57600);
 	tio.c_iflag = IGNPAR;
 	tio.c_oflag &= ~ONLCR;
 	tio.c_lflag = 0; /* turn of CANON, ECHO*, etc */
@@ -127,8 +127,8 @@ int openserial(const char *device, int speed)
 #else
 	tio.c_cflag =  speed | CS8 | CLOCAL | CREAD;
 #endif
-	tio.c_ispeed = speed;
-	tio.c_ospeed = speed;
+	cfsetispeed(&tio, speed);
+	cfsetospeed(&tio, speed);
 
 	tcsetattr(fd, TCSANOW, &tio);
 	tcflush(fd, TCIFLUSH);
